@@ -11,7 +11,7 @@ COPY ./start.sh /usr/
 WORKDIR /usr/
 RUN pip install dbus-python
 
-COPY .updateconnection.py /usr
+COPY ./updateconnection.py /usr
 
 ENV INITSYSTEM on
 
