@@ -1,4 +1,4 @@
-FROM rmoorexcelion/als-gateway-base
+FROM resin/raspberrypi3-node
 
 RUN apt-get update && apt-get install -y \
 	python-dev \
@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
 	libdbus-glib-1-dev \
 	&& rm -rf /var/lib/apt/lists/
 
-COPY ./aggregator/start.sh /usr/
+COPY ./start.sh /usr/
 
 WORKDIR /usr/
 RUN pip install dbus-python
