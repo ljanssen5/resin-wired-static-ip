@@ -209,13 +209,13 @@ def update_connection(uuid, method, ip, prefix, gateway, dns1, dns2):
 
         return True
 
-def reload_connections():
-    bus = dbus.SystemBus()
-    proxy = bus.get_object("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager/Settings")
-    settings = dbus.Interface(proxy, "org.freedesktop.NetworkManager.Settings")
 
-    settings.ReloadConnections()
-    return True
+def reactivate(interface_name="eth0"):
+    bus = dbus.SystemBus()
+    proxy = bus.get_object("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager")
+    nm = dbus.Interface(proxy, "org.freedesktop.NetworkManager")
+    devpath = nm.GetDeviceByIpIface(interface_name)
+    nm.ActivateConnection('/', devpath, '/')
 
 
 parser = argparse.ArgumentParser(description='Add connection via network manager')
@@ -235,5 +235,6 @@ if connection_uuid:
     result = update_connection(connection_uuid, 'manual', args.ip, args.cidr, args.gateway, args.dns1, args.dns2)
     print result
     print_connection_settings(connection_uuid)
+    reactivate()
 else:
     print False
