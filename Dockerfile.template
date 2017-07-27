@@ -1,0 +1,19 @@
+FROM rmoorexcelion/als-gateway-base
+
+RUN apt-get update && apt-get install -y \
+	python-dev \
+	python-pip \
+	libdbus-glib-1-dev \
+	&& rm -rf /var/lib/apt/lists/
+
+COPY ./aggregator/start.sh /usr/
+
+WORKDIR /usr/
+RUN pip install dbus-python
+
+COPY .updateconnection.py /usr
+
+ENV INITSYSTEM on
+
+WORKDIR /usr
+CMD bash start.sh
